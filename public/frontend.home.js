@@ -46,7 +46,7 @@ $(document).ready(()=>{
                         }
                     }
                     if(owner){
-                        html = html.concat("<h3 class='text-red-600 cursor-pointer select-none delete-post'>Delete</h3>")
+                        html = html.concat("<h3 class='text-red-600 cursor-pointer select-none delete-post text-center'>Delete</h3>")
                     }
                     html = html.concat("</div>")
                     $(".posts").append(html)

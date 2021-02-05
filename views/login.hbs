@@ -17,8 +17,8 @@
         {{>header}}
         <form action="/login" method="POST" class='flex flex-col w-screen items-center'>
             <h1 class="text-4xl mt-8">Log In</h1>
-            <input type="text" name="username" id="username" class="border-2 outline-none w-9/12 my-8 p-2 text text-lg" placeholder="Username">
-            <input type="password" name="password" id="password" class="border-2 outline-none w-9/12 p-2 text-lg  mb-0" placeholder="Password">
+            <input type="text" name="username" id="username" class="border-2 outline-none w-9/12 my-8 p-2 text text-lg" placeholder="Username" maxlength="100">
+            <input type="password" name="password" id="password" class="border-2 outline-none w-9/12 p-2 text-lg  mb-0" placeholder="Password" maxlength="100">
             {{#if error}}
             <h3 class="text-red-500 mb-4">{{error}}</h3>
             {{else}}
