@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" >
+    <style>
+        body{
+            min-height: 100vh;
+        }
+    </style>
+    
+</head>
+<body class=" flex flex-col justify-between items-center" id="body">
+    <div class="main-content">
+        {{>header}}
+        <form action="/login" method="POST" class='flex flex-col w-screen items-center'>
+            <h1 class="text-4xl mt-8">Log In</h1>
+            <input type="text" name="username" id="username" class="border-2 outline-none w-9/12 my-8 p-2 text text-lg" placeholder="Username">
+            <input type="password" name="password" id="password" class="border-2 outline-none w-9/12 p-2 text-lg  mb-0" placeholder="Password">
+            {{#if error}}
+            <h3 class="text-red-500 mb-4">{{error}}</h3>
+            {{else}}
+            <h3 class="text-red-500 mb-4 text-opacity-0">Error</h3 >
+            {{/if}}
+
+            
+            <button type="submit" class="bg-green-500  px-4 py-2 text-lg w-8/12 rounded-full text-white hover:bg-green-600">Submit</button>
+        
+        
+        </form>
+        
+
+    </div>
+    <div class="footer h-14 w-11/12 border border-gray-500 border-b-0 border-r-0 border-l-0 flex justify-center items-center">
+        <h3 class='text-lg'>© Bobby Palazzi 2021</h3>
+    </div>
+    
+    
+
+    
+    
+</body>
+</html>

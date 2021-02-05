@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" >
+</head>
+<body>
+    {{>header}}
+    <div class="main-content w-screen">
+        <form action="/upload" method="POST" enctype="multipart/form-data" class="flex items-center flex-col">
+            <textarea name="description" id="description" cols="25" rows="7"  class="border-2 border-gray-300 focus:border-gray-400 outline-none text-xl w-10/12 my-12 p-2" style="resize:none;" maxlength="350"></textarea>
+            <input type="file" name="media" id="media" class='ml-24'>
+            <button type="submit" class="py-2 px-6 bg-green-500 rounded text-white mt-8">Post</button> 
+
+        </form>
+    </div>
+    
+</body>
+</html>

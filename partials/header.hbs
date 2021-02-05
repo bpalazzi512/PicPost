@@ -1,0 +1,13 @@
+<nav class="w-screen h-16 bg-black text-white flex flex-row items-center justify-between">
+        <a href="/home" class="ml-4 text-2xl border border-white border-t-0 border-r-0 border-l-0">We Suck At Golf</a>
+        {{#if user}}
+        <div class="flex flex-row items-center">
+            <a href="/compose" class="text-white text-sm mr-4">Compose</a>
+            <a href="/logout" class="py-1.5 px-6 rounded bg-red-600 text-white text-base hover:bg-red-700 mr-4">Logout</a>
+        </div>
+        {{else}}
+        <a href="/login" class="py-1.5 px-6 bg-black border-solid text-base border-white border rounded mr-4 hover:bg-white hover:text-black hover:border-black">Login</a>
+        {{/if}}
+        
+        
+</nav>
