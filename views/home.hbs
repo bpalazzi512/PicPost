@@ -5,32 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="style.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     
-    <div class="main-content w-screen flex flex-col items-center">
+    <div class="main-content text-center">
+        
         {{>header}}
-        {{#each posts }}
-        
-        <div class="border border-gray-400 w-10/12 p-5 rounded mt-4 shadow-lg">
-            <h3 class="text-xl font-semibold">{{this.formattedTime}} <span class="font-normal text-gray-800">{{this.description}}</span></h3>
-            <h3 class="text-gray-500">- {{this.userName}}</h3>
+        <div class="posts w-screen flex flex-col items-center">
+            {{#if owner}}
+            {{#each posts }}
             
-            {{#if imgName}}
-            {{#if this.isImg}}
-            <img src="uploads/{{this.imgName}}" alt="" class=" mt-3">
-            {{else}}
-            <video  controls preload="metadata" poster="uploads/{{this.imgName}}" class=" mt-3">
-            <source src="uploads/{{this.imgName}}" type="video/mp4">
+            <div class="border border-gray-400 w-10/12 p-5 rounded mt-4 shadow-lg" id={{this.postId}}>
+                <h3 class="text-xl font-semibold">{{this.formattedTime}} <span class="font-normal text-gray-800">{{this.description}}</span></h3>
+                <h3 class="text-gray-500">- {{this.userName}}</h3>
+                
+                
+                {{#if this.imgName}}
+                {{#if this.isImg}}
+                <img src="uploads/{{this.imgName}}" alt="" class=" mt-3">
+                
+                {{else}}
+                <video  controls preload="metadata" poster="uploads/{{this.imgName}}" class=" mt-3">
+                <source src="uploads/{{this.imgName}}" type="video/mp4">
+                </video>
+                
+                
+                
+                
 
-            {{/if}}
-            {{/if}}
-
-        </div>
-        {{/each}}
+                {{/if}}
+                {{/if}}
+                <h3 class="text-red-600 cursor-pointer select-none delete-post">Delete</h3>
+                
+                
         
+            </div>
+            {{/each}}
+            {{else}}
+            {{#each posts }}
+            
+            <div class="border border-gray-400 w-10/12 p-5 rounded mt-4 shadow-lg" id={{this.postId}}>
+                <h3 class="text-xl font-semibold">{{this.formattedTime}} <span class="font-normal text-gray-800">{{this.description}}</span></h3>
+                <h3 class="text-gray-500">- {{this.userName}}</h3>
+                
+                
+                {{#if imgName}}
+                {{#if this.isImg}}
+                <img src="uploads/{{this.imgName}}" alt="" class=" mt-3">
+                
+                {{else}}
+                <video  controls preload="metadata" poster="uploads/{{this.imgName}}" class=" mt-3">
+                <source src="uploads/{{this.imgName}}" type="video/mp4">
+                </video>
+                
+                
+                
+                
+
+                {{/if}}
+                {{/if}}
+                
+                
+                
+        
+            </div>
+            {{/each}}
+
+            {{/if}}
+        </div>
+        <h4 class="text-xl my-10 cursor-pointer text-blue-400" id="show-more">Show More Posts</h4>
     </div>
     
-    
+    <script src="frontend.home.js"></script>
 </body>
 </html>

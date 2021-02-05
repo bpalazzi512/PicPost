@@ -6,7 +6,7 @@ const db = require('./db')
 const hbs = require('hbs');
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
-const { read } = require('fs');
+const fs = require('fs');
 
 //set storage for multer
 const storage = multer.diskStorage({
@@ -15,6 +15,9 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
     }
 })
+
+
+
 
 //init upload variable
 const upload = multer({
@@ -32,6 +35,15 @@ hbs.registerHelper('json', function(context) {
     return JSON.stringify(context);
 });
 
+// app.get("/delete", (req, res)=>{
+//     try {
+//         fs.unlinkSync("./public/uploads/test.txt")
+//     } catch (error) {
+//         console.log(error)
+        
+//     }
+//     res.send("hello")
+// })
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'public', 'uploads')));
@@ -47,9 +59,17 @@ app.get("/logout", (req, res) => {
 
 app.get("/home", getUser,(req, res) => {
      
-    db.query("SELECT * FROM posts ORDER BY postId DESC", (err, rows)=>{
+    db.query("SELECT * FROM posts ORDER BY postId DESC LIMIT 5", (err, rows)=>{
         if(req.user){
-            res.render("home", {posts: rows, user: req.user}) 
+            console.log(req.owner)
+            if(req.owner){
+                console.log('rendering owner')
+                res.render("home", {posts: rows, user: req.user, owner: req.owner}) 
+            }else{
+                console.log("rendering not owner")
+                res.render("home", {posts: rows, user: req.user}) 
+            }
+            
 
         }else{
             res.render("home", {posts: rows})
@@ -70,6 +90,46 @@ app.get("/compose", authTokenSecret,(req, res) => {
 })
 
 
+app.post("/deletepost", (req, res) => {
+    let postId = req.body.postId
+    console.log(req.body.postId)
+    //res.json({message: "hello"})
+    db.query("SELECT * FROM posts WHERE postId=?", [postId], (err, rows) => {
+        let imgName = rows[0].imgName
+        console.log("Got the Image name")
+        db.query("DELETE FROM posts WHERE postId=?", [postId], (err, results)=>{
+            console.log("deleted post")
+            if(imgName != null){ 
+                try {
+                    fs.unlinkSync("./public/uploads/"+imgName)
+                    res.json({message: "done", postId: postId})
+                    
+                } catch (error) {
+                    console.log("error")
+                    
+                }
+                
+            }else{
+                res.json({message: "done", postId: postId})
+            }
+        })
+    })
+})
+
+app.post("/getposts", getUser,(req, res) => {
+    console.log(req.body.limit)
+    let limit = req.body.limit
+    db.query("SELECT * FROM posts ORDER BY postId DESC LIMIT ?", [limit], (err, rows) => {
+        if(req.owner){
+            res.json({posts: rows, owner: req.owner})
+
+        }else{
+            res.json({posts: rows})
+        }
+        
+    })
+    
+})
 
 //when post needs to be added
 app.post("/upload", getUser, (req, res) => {
@@ -77,15 +137,24 @@ app.post("/upload", getUser, (req, res) => {
         if(err){
             res.send('error occurred')
         }else{
+            //if user did not upload a file
             if(!req.file){
-                db.query("INSERT INTO posts VALUES(0, ?, ?, NULL, ?, ?, ?, NULL, ?)", [req.user.userId, req.body.description, getDateTime(), getFormattedDate(), getFormattedTime(), req.user.name], (err, rows)=>{
-                    if(err){
-                        console.log(err)
-                    }else{
-                        res.render("uploaded", {user: req.user})
-                    }
-                    
-                })
+                //if user did not write a description
+                if(req.body.description == ""){
+                    console.log("User Needs to Write Something")
+                    res.redirect("/compose")
+                }else{
+                    db.query("INSERT INTO posts VALUES(0, ?, ?, NULL, ?, ?, ?, NULL, ?)", [req.user.userId, req.body.description, getDateTime(), getFormattedDate(), getFormattedTime(), req.user.name], (err, rows)=>{
+                        if(err){
+                            console.log(err)
+                        }else{
+                            res.render("uploaded", {user: req.user})
+                        }
+                        
+                    })
+
+                }
+                
                 
                 
             }else{
@@ -154,7 +223,9 @@ app.post("/login", (req, res) => {
     
 }) 
 
-app.listen(3000, ()=>{
+const port = process.env.PORT || 3000
+
+app.listen(port, ()=>{
     console.log('server running')
 })
 
@@ -182,6 +253,10 @@ function getUser(req, res, next) {
         if(err){
             return next()
         }else{
+            console.log(user.userId)
+            if(user.userId == 1){ 
+                req.owner = "Owner Account"
+            }
             req.user = user
             next()
         }

@@ -2,10 +2,10 @@ const mysql = require('mysql')
 
 
 let db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'golf',
+    host: 'sql5.freesqldatabase.com',
+    user: 'sql5390952',
+    password: 'wm3XCSHcM3',
+    database: 'sql5390952',
     multipleStatements: true
 })
 
