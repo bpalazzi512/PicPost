@@ -3,11 +3,11 @@ let html
 
 $(document).ready(()=>{
     $(".delete-post").on("click",function(){
-        let parent = $(this).parent().attr('id')
+        
         $.ajax({
             type: "POST",
             url: "/deletepost",
-            data: JSON.stringify({postId: parent}),
+            data: JSON.stringify({postId: $(this).parent().attr('id')}),
             contentType: "application/json",
             dataType: "json",
             success: function (response) {
@@ -17,15 +17,15 @@ $(document).ready(()=>{
                 
                 
             },
-            async: false
+            
         });
     })
     $("#show-more").on("click", function (e) {
-        limit = limit + 5
+         
         $.ajax({
             type: "POST",
             url: "/getposts",
-            data: JSON.stringify({limit: limit}),
+            data: JSON.stringify({limit: limit+5}),
             contentType: "application/json",
             dataType: "json",
             success: function (response) {
@@ -53,7 +53,7 @@ $(document).ready(()=>{
                 }
                 
             },
-            async: false
+            
         });
 
     })
